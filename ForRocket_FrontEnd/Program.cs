@@ -16,7 +16,7 @@ namespace ForRocket_FrontEnd
     {
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run(new ControllerForm());
+      Application.Run(new Simulation());
     }
   }
 }

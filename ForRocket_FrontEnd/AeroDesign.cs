@@ -7,56 +7,20 @@ namespace AeroDesign
 {
   public partial class AeroDesignForm : Form
   {
-    //空力設計フォームの呼び出しラッパー
-    static public ForRocket_FrontEnd.AeroDesign_interface call_AeroForm(ForRocket_FrontEnd.AeroDesign_interface Aero_interface)
-    {
-      AeroDesignForm aerodesign_form = new AeroDesignForm(Aero_interface);
-      aerodesign_form.ShowDialog();
-      aerodesign_form.Dispose();
-
-      return Aero_interface;
-    }
-
-    ForRocket_FrontEnd.AeroDesign_interface Controller_interface;
-    Rocket rocket;
-    static_stability static_stability;
-    dynamic_stability dynamic_stability;
-    Plotter Plotter;
-
+    BarrowmanMethod BM = new BarrowmanMethod();
     int flag_calc = 0;
 
-    public AeroDesignForm(ForRocket_FrontEnd.AeroDesign_interface Aero_interface)
+    public AeroDesignForm()
     {
       InitializeComponent();
-      Controller_interface = Aero_interface;
-      rocket = new Rocket(Controller_interface);
-      static_stability = new static_stability();
-      dynamic_stability = new dynamic_stability();
-      Plotter = new Plotter();
-
+      button_output.Enabled = false;
       flag_calc = 0;
     }
 
-    private void AeroDesignForm_Load(object sender, EventArgs e)
+    private void MainForm_Load(object sender, EventArgs e)
     {
-      button_output.Enabled = false;
-      
       combo_nose.Items.Add("ダブルコーン");
       combo_nose.Items.Add("オジャイブ");
-
-      text_diameter.Text = rocket.d.ToString("F3");
-      text_length.Text = rocket.l.ToString("F3");
-      text__lcgs.Text = rocket._lcgs.ToString("F3");
-      text__lcg.Text = rocket._lcg.ToString("F3");
-      text__lcga.Text = rocket._lcga.ToString("F3");
-      text_ms.Text = rocket._ms.ToString("F3");
-      text_m.Text = rocket._m.ToString("F3");
-      text_ma.Text = rocket._ma.ToString("F3");
-      text_lnose.Text = rocket.nose.l.ToString("F3");
-      text_dtail.Text = rocket.boattail.d.ToString("F3");
-      text_ltail.Text = rocket.boattail.l.ToString("F3");
-      text_thick.Text = rocket.fin.thickness.ToString("F3");
-      text_rho.Text = rocket.fin.rho.ToString("F3");
 
       rocketplot.ChartAreas[0].AxisX.Maximum = 4000;
       rocketplot.ChartAreas[0].AxisX.Minimum = 0.0;
@@ -76,12 +40,12 @@ namespace AeroDesign
       rocketplot.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
       rocketplot.ChartAreas[0].Position.Height = 100;
       rocketplot.ChartAreas[0].Position.Width = 100;
-      
+
+      input_read();
+
+
     }
 
-    
-
-    //Description
     private void text_diameter_Enter(object sender, EventArgs e)
     {
       DescriptionBar.Text = "機体代表直径";
@@ -118,6 +82,7 @@ namespace AeroDesign
     {
       DescriptionBar.Text = "最高速に達する時点の高度（要シミュレーション）";
     }
+
     private void combo_nose_Enter(object sender, EventArgs e)
     {
       DescriptionBar.Text = "ノーズ形状";
@@ -126,6 +91,7 @@ namespace AeroDesign
     {
       DescriptionBar.Text = "ノーズ長さ　　平坦でないテーパ部";
     }
+
     private void text_dtail_Enter(object sender, EventArgs e)
     {
       DescriptionBar.Text = "ボートテイル直径";
@@ -134,6 +100,7 @@ namespace AeroDesign
     {
       DescriptionBar.Text = "ボートテイル長さ";
     }
+
     private void text_Xfplus_Enter(object sender, EventArgs e)
     {
       DescriptionBar.Text = "エンドカバーからフィンを機体上部へのオフセット長さ　　オフセットなければ0";
@@ -171,7 +138,6 @@ namespace AeroDesign
       DescriptionBar.Text = "フィン材料ポアソン比（フラッタ速度）";
     }
 
-    //update
     private void text_diameter_Leave(object sender, EventArgs e)
     {
       BM.d_body = double.Parse(text_diameter.Text);
@@ -192,7 +158,7 @@ namespace AeroDesign
     }
     private void text_lcgs_Leave(object sender, EventArgs e)
     {
-      BM.lcgs = double.Parse(text__lcgs.Text);
+      BM.lcgs = double.Parse(text_lcgs.Text);
       if (flag_calc == 1)
       {
         BM.calculation();
@@ -201,7 +167,7 @@ namespace AeroDesign
     }
     private void text_lcg_Leave(object sender, EventArgs e)
     {
-      BM.lcg = double.Parse(text__lcg.Text);
+      BM.lcg = double.Parse(text_lcg.Text);
       if (flag_calc == 1)
       {
         BM.calculation();
@@ -210,7 +176,7 @@ namespace AeroDesign
     }
     private void text_lcga_Leave(object sender, EventArgs e)
     {
-      BM.lcga = double.Parse(text__lcga.Text);
+      BM.lcga = double.Parse(text_lcga.Text);
       if (flag_calc == 1)
       {
         BM.calculation();
@@ -274,21 +240,7 @@ namespace AeroDesign
 
     private void combo_nose_SelectedIndexChanged(object sender, EventArgs e)
     {
-      switch (combo_nose.SelectedIndex)
-      {
-        case 0:
-          rocket.nose = new DoubleCone(Controller_interface.d, Controller_interface.lnose);
-          break;
-        case 1:
-          rocket.nose = new OgiveCone(Controller_interface.d, Controller_interface.lnose);
-          break;
-
-      }
-
-      
-
-
-        BM.nose.flag_nose = combo_nose.SelectedIndex;
+      BM.nose.flag_nose = combo_nose.SelectedIndex;
       if (flag_calc == 1)
       {
         BM.calculation();
@@ -454,52 +406,70 @@ namespace AeroDesign
     }
 
 
-    
+    //aero_input read
+    private void input_read()
+    {
+      string file_path = null;
+      int i;
+      double[] array = new double[13];
 
-    //書き換え可テキストを読み取り
+      file_path = "./sbin/aero_input.inp";
+
+      if (file_path != null)
+      {
+        string line;
+        using (StreamReader dataFile = new StreamReader(file_path))
+        {
+          for (i = 0; i <= 12; i++)
+          {
+            line = dataFile.ReadLine();
+            if (line == null) break;
+            array[i] = double.Parse(line);
+          }
+        }
+
+        text_diameter.Text = (array[0] * 1000.0).ToString();
+        text_length.Text = (array[1] * 1000.0).ToString();
+        text_lcgs.Text = (array[2] * 1000.0).ToString();
+        text_lcg.Text = (array[3] * 1000.0).ToString();
+        text_lcga.Text = (array[4] * 1000.0).ToString();
+        text_ms.Text = array[5].ToString();
+        text_m.Text = array[6].ToString();
+        text_ma.Text = array[7].ToString();
+        text_lnose.Text = array[8].ToString();
+        text_dtail.Text = array[9].ToString();
+        text_ltail.Text = array[10].ToString();
+        text_thick.Text = array[11].ToString();
+        text_rho.Text = array[12].ToString();
+
+      }
+    }
+
+    //全テキストを読み取り
     private void AllRead()
     {
-      rocket.d = double.Parse(text_diameter.Text);
-      rocket.l = double.Parse(text_length.Text);
-      rocket._lcgs = double.Parse(text__lcgs.Text);
-      rocket._lcg = double.Parse(text__lcg.Text);
-      rocket._lcga = double.Parse(text__lcga.Text);
-      rocket._ms = double.Parse(text_ms.Text);
-      rocket._m = double.Parse(text_m.Text);
-      rocket._ma = double.Parse(text_ma.Text);
-      rocket.Altitude = double.Parse(text_altitude.Text);
-      rocket.nose.l = double.Parse(text_lnose.Text);
-      rocket.boattail.d = double.Parse(text_dtail.Text);
-      rocket.boattail.l = double.Parse(text_ltail.Text);
-      rocket.fin.dX_fin = double.Parse(text_Xfplus.Text);
-      rocket.fin.Cr = double.Parse(text_Cr.Text);
-      rocket.fin.Ct = double.Parse(text_Ct.Text);
-      rocket.fin.Cm = double.Parse(text_Cm.Text);
-      rocket.fin.Span = double.Parse(text_span.Text);
-      rocket.fin.thickness = double.Parse(text_thick.Text);
-      rocket.fin.rho = double.Parse(text_rho.Text);
-      rocket.fin.young = double.Parse(text_young.Text);
-      rocket.fin.poisson = double.Parse(text_poisson.Text);
-    }
-
-    
-
-    //空力計算
-    private void CalcButton_Click(object sender, EventArgs e)
-    {
-      AllRead();
-      BM.calculation();
-      RocketPlot();
-      flag_calc = 1;
-      button_output.Enabled = true;
-    }
-
-    private void calculation()
-    {
-      AllRead();
-      static_stability.calculation(rocket);
-      dynamic_stability.calculation(rocket);
-      rocket.CenterOfGravity(checkBox_includeFin.Checked);
+      BM.d_body = double.Parse(text_diameter.Text);
+      BM.l_body = double.Parse(text_length.Text);
+      BM.lcgs = double.Parse(text_lcgs.Text);
+      BM.lcg = double.Parse(text_lcg.Text);
+      BM.lcga = double.Parse(text_lcga.Text);
+      BM.ms = double.Parse(text_ms.Text);
+      BM.m = double.Parse(text_m.Text);
+      BM.ma = double.Parse(text_ma.Text);
+      BM.fin.Altitude = double.Parse(text_altitude.Text);
+      BM.nose.flag_nose = combo_nose.SelectedIndex;
+      BM.nose.l_nose = double.Parse(text_lnose.Text);
+      BM.tail.d_tail = double.Parse(text_dtail.Text);
+      BM.tail.l_tail = double.Parse(text_ltail.Text);
+      BM.fin.dX_fin = double.Parse(text_Xfplus.Text);
+      BM.fin.Cr = double.Parse(text_Cr.Text);
+      BM.fin.Ct = double.Parse(text_Ct.Text);
+      BM.fin.Cm = double.Parse(text_Cm.Text);
+      BM.fin.Span = double.Parse(text_span.Text);
+      BM.fin.thickness = double.Parse(text_thick.Text);
+      BM.fin.rho = double.Parse(text_rho.Text);
+      BM.fin.young = double.Parse(text_young.Text);
+      BM.fin.poisson = double.Parse(text_poisson.Text);
     }
 
     //ロケットをプロット
@@ -508,9 +478,9 @@ namespace AeroDesign
       int i;
 
       text_Vf.Text = BM.fin.Vf.ToString("F3");
-      text_lcgs.Text = BM.lcgs_.ToString("F3");
-      text_lcg.Text = BM.lcg_.ToString("F3");
-      text_lcga.Text = BM.lcga_.ToString("F3");
+      text_lcgs_.Text = BM.lcgs_.ToString("F3");
+      text_lcg_.Text = BM.lcg_.ToString("F3");
+      text_lcga_.Text = BM.lcga_.ToString("F3");
       text_lcp.Text = BM.lcp.ToString("F3");
       text_CNa.Text = BM.CNa.ToString("F3");
       text_Cmq.Text = BM.Cmq.ToString("F3");
@@ -567,25 +537,34 @@ namespace AeroDesign
       rocketplot.Series["lcp"].MarkerColor = Color.Red;
       rocketplot.Series["lcp"].Points.AddXY(BM.lcp, 0.0);
 
-      for (i = 0; i <= 7; i++)
+      for(i = 0; i <= 7;i++)
       {
         rocketplot.Series[i].IsVisibleInLegend = false;
       }
     }
 
+    //空力計算
+    private void CalcButton_Click(object sender, EventArgs e)
+    {
+      AllRead();
+      BM.calculation();
+      RocketPlot();
+      flag_calc = 1;
+      button_output.Enabled = true;
+    }
+    
     //output
     private void button_output_Click(object sender, EventArgs e)
     {
-      static_stability.calculation(rocket);
-      dynamic_stability.calculation(rocket);
-      rocket.CenterOfGravity(checkBox_includeFin.Checked);
-
-      Controller_interface.ms = rocket.ms;
-      Controller_interface.lcgs = rocket.lcgs;
-      Controller_interface.lcp = rocket.lcp;
-      Controller_interface.CNa = rocket.CNa;
-      Controller_interface.Cmq = rocket.Cmq;
-      Controller_interface.Clp = rocket.Clp;
+      using (StreamWriter DataFile = new StreamWriter("./sbin/aero_param.out"))
+      {
+        DataFile.WriteLine(BM.fin.m_fin.ToString());
+        DataFile.WriteLine((BM.fin.lcg_fin / 1000.0).ToString());
+        DataFile.WriteLine((double.Parse(text_lcp.Text) / 1000.0).ToString());
+        DataFile.WriteLine(text_CNa.Text);
+        DataFile.WriteLine(text_Cmq.Text);
+        DataFile.WriteLine(text_Clp.Text);
+      }
 
       using (StreamWriter DataFile = new StreamWriter("../result/AeroDesing.out"))
       {
@@ -594,9 +573,9 @@ namespace AeroDesign
         DataFile.WriteLine("!----------------------------------------------------------!");
         DataFile.WriteLine("Body Diameter [mm] :" + text_diameter.Text);
         DataFile.WriteLine("Body Length [mm] :" + text_length.Text);
-        DataFile.WriteLine("Dry Center of Gravity [mm] :" + text__lcgs.Text);
-        DataFile.WriteLine("All Center of Gravity [mm] :" + text__lcg.Text);
-        DataFile.WriteLine("Burn Out Center of Gravity [mm] :" + text__lcga.Text);
+        DataFile.WriteLine("Dry Center of Gravity [mm] :" + text_lcgs.Text);
+        DataFile.WriteLine("All Center of Gravity [mm] :" + text_lcg.Text);
+        DataFile.WriteLine("Burn Out Center of Gravity [mm] :" + text_lcga.Text);
         DataFile.WriteLine("Dry Body Mass [kg] :" + text_ms.Text);
         DataFile.WriteLine("All Body Mass [kg] :" + text_m.Text);
         DataFile.WriteLine("Burn Out Body Mass [kg] :" + text_ma.Text);
@@ -622,126 +601,51 @@ namespace AeroDesign
         DataFile.WriteLine("Burn Out Length Ratio [-] :" + text_LRa.Text);
       }
 
-      this.Close();
-    }
-        
-  }
-
-  public class Rocket
-  {
-    public Nosecone nose;
-    public Fin fin;
-    public Boattail boattail;
-
-    public double l;
-    public double d;
-    public double ms;
-    public double m;
-    public double ma;
-    public double lcgs;
-    public double lcg;
-    public double lcga;
-    public double lcp;
-    public double CNa;
-    public double Cmq;
-    public double Clp;
-
-    public double _lcgs, _lcg, _lcga; // 初期保持用重心
-    public double _ms, _m, _ma; // 初期保持用質量
-    public double Css, Cs, Csa; // 直径比
-    public double Fsts, Fst, Fsta; // 全長比
-
-    public double Altitude;
-
-    public Rocket(ForRocket_FrontEnd.AeroDesign_interface parameter)
-    {
-      l = parameter.l;
-      d = parameter.d;
-      _ms = parameter.ms;
-      _m = parameter.m;
-      _ma = parameter.ma;
-      _lcgs = parameter.lcgs;
-      _lcg = parameter.lcg;
-      _lcga = parameter.lcga;
       
-      fin = new Fin(parameter.t_fin, parameter.rho_fin);
-      boattail = new Boattail(parameter.dtail, parameter.ltail);
+
+
     }
 
-    public void CenterOfGravity(bool flag_include_fin)
-    {
-      if (flag_include_fin)
-      {
-        lcgs = _lcgs;
-        lcg = _lcg;
-        lcga = _lcga;
-      }
-      else
-      {
-        lcgs = (_lcgs * _ms + fin.lcg_fin * fin.m_fin) / (_ms + fin.m_fin);
-        lcg = (_lcg * _m + fin.lcg_fin * fin.m_fin) / (_m + fin.m_fin);
-        lcga = (_lcga * _ma + fin.lcg_fin * fin.m_fin) / (_ma + fin.m_fin);
-      }
-      
-      Css = (lcp - lcgs) / d;
-      Cs = (lcp - lcg) / d;
-      Csa = (lcp - lcga) / d;
-      Fsts = (lcp - lcgs) / l * 100.0;
-      Fst = (lcp - lcg) / l * 100.0;
-      Fsta = (lcp - lcga) / l * 100.0;
-    }
-  }
-
-  public class Nosecone
-  {
-    public double l;
-    public double LD;
-    public double Ccp; // ノーズ形状による圧力中心係数
-     
-    public double CNa;
-    public double lcp;
-
-    public Nosecone(double d_interface, double l_interface)
-    {
-      l = l_interface;
-      LD = l / d_interface;
-    }
-
-    public virtual void barrowman_nose()
-    {
-    }
     
   }
 
-  public class DoubleCone : Nosecone
-  {
-    public DoubleCone(double d_interface, double l_interface) : base(d_interface, l_interface)
-    {
-    }
 
-    public override void barrowman_nose()
+  //
+  // Personal Class
+  //
+
+  public class Nosecone
+  {
+    public int flag_nose;
+    public double l_nose;
+    public double LD_nose;
+    public double Ccp_nose; // ノーズ形状による圧力中心係数
+
+    public double CNa;
+    public double A22;
+    public double lcp;
+
+    public void pre_calc_nose(double d_body)
     {
-      Ccp = 2.0 / 3.0;
+      LD_nose = l_nose / d_body;
+      if (flag_nose == 0)
+      {
+        Ccp_nose = 2.0 / 3.0;
+      }
+      else if (flag_nose == 1)
+      {
+        Ccp_nose = 1.0 - ((8.0 * Math.Pow(LD_nose, 2) / 3.0) + (Math.Pow(4.0 * Math.Pow(LD_nose, 2) - 1.0, 2) / 4.0) - (((4.0 * Math.Pow(LD_nose, 2) - 1.0) * Math.Pow(4.0 * Math.Pow(LD_nose, 2) + 1.0, 2) / (16.0 * LD_nose)) * Math.Asin(4.0 * LD_nose / (4.0 * Math.Pow(LD_nose, 2) + 1.0))));
+      }
       CNa = 2.0;
-      lcp = l * Ccp;
+      A22 = 0.5 * CNa;
+      lcp = l_nose * Ccp_nose;
     }
   }
-  public class OgiveCone : Nosecone
-  {
-    public OgiveCone(double d_interface, double l_interface) : base(d_interface, l_interface)
-    {
-    }
 
-    public override void barrowman_nose()
-    {
-      Ccp = 1.0 - ((8.0 * Math.Pow(LD, 2) / 3.0) + (Math.Pow(4.0 * Math.Pow(LD, 2) - 1.0, 2) / 4.0) - (((4.0 * Math.Pow(LD, 2) - 1.0) * Math.Pow(4.0 * Math.Pow(LD, 2) + 1.0, 2) / (16.0 * LD)) * Math.Asin(4.0 * LD / (4.0 * Math.Pow(LD, 2) + 1.0))));
-      CNa = 2.0;
-      lcp = l * Ccp;
-    }    
-  }
-  
   public class Fin
   {
+    public standard_atmosphere atmosphere = new standard_atmosphere();
+
     public double X_fin; // 先端からフィン先端までの距離
     public double dX_fin; // エンドカバー後端からフィン後端までのかさ増し距離.基本0
     public double Cr;
@@ -754,26 +658,23 @@ namespace AeroDesign
     public double AR; // アスペクト比
     public double ramda; // テーパ比
     public double thickness;
-    public double rho;
+    public double rho_; // 読み込み用
+    public double rho; // 計算用
     public double young, poisson, shear;
     public double m_fin;
     public double lcg_fin;
-    
+
+    public double Altitude;
     public double Pa, Cs;
     public double Vf;
 
-    public double CNa_fin; //フィンのみ揚力傾斜
-    public double Kfb; //フィン-ボディ干渉係数
-    public double CNa; //フィン-ボディ揚力傾斜
+    public double CNa_fin;
+    public double Kfb;
+    public double CNa;
+    public double A22;
     public double lcp;
 
-    public Fin(double t_interface,double rho_interface)
-    {
-      thickness = t_interface;
-      rho = rho_interface;
-    }
-
-    public void barrowman_fin(double d_body, double l_body, double l_tail)
+    public void pre_calc_fin(double l_body, double l_tail, double d_body)
     {
       X_fin = l_body - (Cr + l_tail + dX_fin);
       kai = utility.deg2rad(90.0) - Math.Atan2(Span, Cm);
@@ -781,108 +682,217 @@ namespace AeroDesign
       A_fin = (Cr + Ct) * Span * 0.5 * Math.Pow(10, -6); // m^2
       AR = Math.Pow(Span / 1000.0, 2) / A_fin;
       ramda = Ct / Cr;
+      rho = rho_ * 1000.0; // kg/m^3
       shear = young / (2.0 * (1.0 + poisson));
-      m_fin = 4.0 * (rho * 1000.0 * A_fin * (thickness / 1000.0)); // 4枚分
+      m_fin = 4.0 * (rho * A_fin * (thickness / 1000.0)); // 4枚分
       lcg_fin = X_fin + (Cr - ((Ct * Ct + Cr * Ct + Cr * Cr) / (3.0 * (Cr + Ct))));
 
       CNa_fin = 4.0 * 4.0 * Math.Pow(Span / d_body, 2) / (1.0 + Math.Sqrt(1.0 + Math.Pow(2.0 * l / (Cr + Ct), 2)));
       Kfb = 1.0 + 0.5 * d_body / (0.5 * d_body + Span);
       CNa = CNa_fin * Kfb;
+      A22 = 0.5 * CNa;
       lcp = X_fin + (Cm * (Cr + 2.0 * Ct) / (3.0 * (Cr + Ct))) + (Cr + Ct - (Cr * Ct / (Cr + Ct))) / 6.0;
-     }
-
-    public void flutter_fin(double Altitude)
-    {
-      standard_atmosphere atmosphere = new standard_atmosphere();
 
       Pa = atmosphere.getPressure(Altitude);
       Cs = atmosphere.getSoundofSpeed(Altitude);
       Vf = Cs * Math.Sqrt((shear * Math.Pow(10, 9)) / ((1.337 * Math.Pow(AR, 3) * Pa * (ramda + 1.0)) / (2.0 * (AR + 2.0) * Math.Pow(thickness / Cr, 3))));
     }
-    
+
+    // グラフ用
+    public double[,] point = new double[5, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
+    public void point_set(int index, double valueX, double valueY)
+    {
+      if (index >= 1 && index <= 3)
+      {
+        point[index, 0] = valueX;
+        point[index, 1] = valueY;
+      }
+    }
+    public double getX(int index)
+    {
+      return point[index, 0];
+    }
+    public double getY(int index)
+    {
+      return point[index, 1];
+    }
+    public double maxpoint()
+    {
+      int i, j;
+      double max = 0.0;
+      for (i = 0; i <= 4; i++)
+      {
+        for (j = 0; i <= 4; i++)
+        {
+          if (point[i, j] > max)
+          {
+            max = point[i, j];
+          }
+        }
+      }
+      return max;
+    }
+
   }
 
   public class Boattail
   {
-    public double d;
-    public double l;
-    public double Xtail;
+    public double d_tail = 0.0;
+    public double l_tail = 0.0;
+    public double X_tail;
 
     public double CNa;
+    public double A22;
     public double lcp;
 
-    public Boattail(double d_interdace, double l_interface)
+    public void pre_calc_tail(double l_body,double d_body)
     {
-      d = d_interdace;
-      l = l_interface;
-    }
-
-    public void barrowman_boattail(double l_body,double d_body)
-    {
-      Xtail = l_body - l;
-      if (d == 0.0 || l == 0.0)
+      X_tail = l_body - l_tail;
+      if (d_tail == 0.0 || l_tail == 0.0)
       {
         CNa = 0.0;
         lcp = 0.0;
       }
       else
       {
-        CNa = 2.0 * (Math.Pow(d / d_body, 2) - 1.0);
-        lcp = Xtail + (l / 3.0) * (1.0 + ((1.0 - (d_body / d)) / (1.0 - Math.Pow(d_body / d, 2))));
+        CNa = 2.0 * (Math.Pow(d_tail / d_body, 2) - 1.0);
+        lcp = X_tail + (l_tail / 3.0) * (1.0 + ((1.0 - (d_body / d_tail)) / (1.0 - Math.Pow(d_body / d_tail, 2))));
       }
-    }
-  }
-  
-  public class static_stability
-  {
-    public void calculation(Rocket rocket)
-    {
-      Barrowman_Method barroeman = new Barrowman_Method();
-      barroeman.barrowman(rocket);
+      A22 = 0.5 * CNa;
     }
   }
 
-  public class Barrowman_Method
-  { 
-    public void barrowman(Rocket rocket)
+  public class BarrowmanMethod
+  {
+    public Nosecone nose = new Nosecone();
+    public Fin fin = new Fin();
+    public Boattail tail = new Boattail();
+    
+
+    public double d_body, r_body;
+    public double l_body;
+    public double LD_body; // L/D
+
+    public double lcgs, lcg, lcga; // フィンなしの重心
+    public double lcgs_, lcg_, lcga_; // フィン込の重心
+
+    public double me, ms, m, ma;
+
+    public double lcp;
+    public double A22;
+    public double CNa;
+    public double Clp; // Roll減衰モーメント係数
+    public double Cmq; // Pitch/Yaw減衰モーメント係数
+
+    public double DRs, DR, DRa; // 直径比
+    public double LRs, LR, LRa; // 全長比
+
+    public int flag_include_fins; // Already include Fin
+
+
+    public void calculation()
     {
-      rocket.nose.barrowman_nose();
-      rocket.fin.barrowman_fin(rocket.d, rocket.l, rocket.boattail.l);
-      rocket.boattail.barrowman_boattail(rocket.l, rocket.d);
+      pre_calc_body();
+      nose.pre_calc_nose(d_body);
+      fin.pre_calc_fin(l_body, tail.l_tail, d_body);
+      tail.pre_calc_tail(l_body, d_body);
       
-      rocket.CNa = rocket.nose.CNa + rocket.fin.CNa + rocket.boattail.CNa;
-      rocket.lcp = (rocket.nose.CNa * rocket.nose.lcp + rocket.fin.CNa * rocket.fin.lcp + rocket.boattail.CNa * rocket.boattail.lcp) / rocket.CNa;
-            
-    }   
+      if (flag_include_fins == 1)
+      {
+        lcgs_ = lcgs;
+        lcg_ = lcg;
+        lcga_ = lcga;
+      }
+      else
+      {
+        lcgs_ = (lcgs * ms + fin.lcg_fin * fin.m_fin) / (ms + fin.m_fin);
+        lcg_ = (lcg * m + fin.lcg_fin * fin.m_fin) / (m + fin.m_fin);
+        lcga_ = (lcga * ma + fin.lcg_fin * fin.m_fin) / (ma + fin.m_fin);
+      }
 
-  }
-  
-  public class dynamic_stability
-  {    
-    public void calculation(Rocket rocket)
-    {
-      ApparentMass_Method apparentmass = new ApparentMass_Method();
-      apparentmass.apparentmass(rocket);
-    }
-  }
+      CNa = nose.CNa + fin.CNa + tail.CNa;
+      A22 = 0.5 * CNa;
+      lcp = (nose.CNa * nose.lcp + fin.CNa * fin.lcp + tail.CNa * tail.lcp) / CNa;
+      Clp = Damping_Roll(fin.AR);
+      Cmq = (Damping_PitchYaw(lcg_) + Damping_PitchYaw(lcga_)) / 2.0;
 
-  public class ApparentMass_Method
-  {
-    public void apparentmass(Rocket rocket)
-    {
-      rocket.Cmq = 0.5 * (Damping_PitchYaw(rocket.lcg, rocket.l, rocket.nose, rocket.fin, rocket.boattail) + Damping_PitchYaw(rocket.lcga, rocket.l, rocket.nose, rocket.fin, rocket.boattail));
-      rocket.Clp = Damping_Roll(rocket.fin.AR);
-    }
-
-    private double Damping_PitchYaw(double lcg, double l_body, Nosecone nose, Fin fin, Boattail boattail)
-    {
-      return -4.0 * ((0.5 * nose.CNa * Math.Pow((nose.lcp - lcg) / l_body, 2)) + (0.5 * fin.CNa * Math.Pow((fin.lcp - lcg) / l_body, 2)) + (0.5 * boattail.CNa * Math.Pow((boattail.lcp - lcg) / l_body, 2)));
+      DRs = (lcp - lcgs_) / d_body;
+      DR = (lcp - lcg_) / d_body;
+      DRa = (lcp - lcga_) / d_body;
+      LRs = (lcp - lcgs_) / l_body * 100.0;
+      LR = (lcp - lcg_) / l_body * 100.0;
+      LRa = (lcp - lcga_) / l_body * 100.0;
     }
 
-    private double Damping_Roll(double AR)
+    public void pre_calc_body()
     {
-      return -AR / (2.0 * Math.PI);
+      r_body = 0.5 * d_body;
+      LD_body = l_body / d_body;
     }
+    
+    public double Damping_PitchYaw(double lcgd)
+    {
+      double Cmq;
+      Cmq = -4.0 * ((nose.A22 * Math.Pow((nose.lcp - lcgd) / l_body, 2)) + (fin.A22 * Math.Pow((fin.lcp - lcgd) / l_body, 2)) + (tail.A22 * Math.Pow((tail.lcp - lcgd) / l_body, 2)));
+      return Cmq;
+    }
+
+    public double Damping_Roll(double AR)
+    {
+      double Clp;
+      Clp = -AR / (2.0 * Math.PI);
+      return Clp;
+    }
+
+
+    // グラフ用
+    public double[,] point_nose = new double[4, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
+    public double[,] point_body = new double[5, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
+    public double[,] point_tail = new double[5, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
+    public double[,] point_fin1 = new double[5, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
+    public double[,] point_fin2 = new double[5, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
+    public double[,] point_fin3 = new double[2, 2] { { 0, 0 }, { 0, 0 } };
+    public void point_set()
+    {
+      fin.point_set(1, fin.Cr, 0.0);
+      fin.point_set(2, fin.Cm + fin.Ct, fin.Span);
+      fin.point_set(3, fin.Cm, fin.Span);
+
+      point_nose[0, 0] = 0.0;              point_nose[0, 1] = 0.0;
+      point_nose[1, 0] = nose.l_nose;      point_nose[1, 1] = r_body;
+      point_nose[2, 0] = nose.l_nose;      point_nose[2, 1] = -r_body;
+      point_nose[3, 0] = point_nose[0, 0]; point_nose[3, 1] = point_nose[0, 1];
+
+      point_body[0, 0] = nose.l_nose;          point_body[0, 1] = r_body;
+      point_body[1, 0] = l_body - tail.l_tail; point_body[1, 1] = r_body;
+      point_body[2, 0] = l_body - tail.l_tail; point_body[2, 1] = -r_body;
+      point_body[3, 0] = nose.l_nose;          point_body[3, 1] = -r_body;
+      point_body[4, 0] = point_body[0, 0];     point_body[4, 1] = point_body[0, 1];
+
+      point_tail[0, 0] = l_body - tail.l_tail; point_tail[0, 1] = r_body;
+      point_tail[1, 0] = l_body;               point_tail[1, 1] = 0.5 * tail.d_tail;
+      point_tail[2, 0] = l_body;               point_tail[2, 1] = -0.5 * tail.d_tail;
+      point_tail[3, 0] = l_body - tail.l_tail; point_tail[3, 1] = -r_body;
+      point_tail[4, 0] = point_tail[0, 0];     point_tail[4, 1] = point_body[0, 1];
+
+      point_fin1[0, 0] = fin.point[0, 0] + fin.X_fin; point_fin1[0, 1] = fin.point[0, 1] + r_body;
+      point_fin1[1, 0] = fin.point[1, 0] + fin.X_fin; point_fin1[1, 1] = fin.point[1, 1] + r_body;
+      point_fin1[2, 0] = fin.point[2, 0] + fin.X_fin; point_fin1[2, 1] = fin.point[2, 1] + r_body;
+      point_fin1[3, 0] = fin.point[3, 0] + fin.X_fin; point_fin1[3, 1] = fin.point[3, 1] + r_body;
+      point_fin1[4, 0] = point_fin1[0, 0];            point_fin1[4, 1] = point_fin1[0, 1];
+
+      point_fin2[0, 0] = point_fin1[0, 0]; point_fin2[0, 1] = -point_fin1[0, 1];
+      point_fin2[1, 0] = point_fin1[1, 0]; point_fin2[1, 1] = -point_fin1[1, 1];
+      point_fin2[2, 0] = point_fin1[2, 0]; point_fin2[2, 1] = -point_fin1[2, 1];
+      point_fin2[3, 0] = point_fin1[3, 0]; point_fin2[3, 1] = -point_fin1[3, 1];
+      point_fin2[4, 0] = point_fin2[0, 0]; point_fin2[4, 1] = point_fin2[0, 1];
+
+      point_fin3[0, 0] = point_fin1[0, 0];
+      point_fin3[1, 0] = point_fin1[1, 0];
+
+
+    }
+
   }
 
   public class standard_atmosphere
@@ -1033,52 +1043,6 @@ namespace AeroDesign
       return Cs;
     }
 
-  }
-
-  public class Plotter
-  {
-    // グラフ用
-    public double[,] point_nose = new double[4, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
-    public double[,] point_body = new double[5, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
-    public double[,] point_tail = new double[5, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
-    public double[,] point_fin1 = new double[5, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
-    public double[,] point_fin2 = new double[5, 2] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
-    public double[,] point_fin3 = new double[2, 2] { { 0, 0 }, { 0, 0 } };
-    public void point_set(Rocket rocket)
-    {
-      point_nose[0, 0] = 0.0; point_nose[0, 1] = 0.0;
-      point_nose[1, 0] = rocket.nose.l; point_nose[1, 1] = rocket.d * 0.5;
-      point_nose[2, 0] = rocket.nose.l; point_nose[2, 1] = -rocket.d * 0.5;
-      point_nose[3, 0] = point_nose[0, 0]; point_nose[3, 1] = point_nose[0, 1];
-
-      point_body[0, 0] = rocket.nose.l; point_body[0, 1] = rocket.d * 0.5;
-      point_body[1, 0] = rocket.l - rocket.boattail.l; point_body[1, 1] = rocket.d * 0.5;
-      point_body[2, 0] = rocket.l - rocket.boattail.l; point_body[2, 1] = -rocket.d * 0.5;
-      point_body[3, 0] = rocket.nose.l; point_body[3, 1] = -rocket.d * 0.5;
-      point_body[4, 0] = point_body[0, 0]; point_body[4, 1] = point_body[0, 1];
-
-      point_tail[0, 0] = rocket.l - rocket.boattail.l; point_tail[0, 1] = rocket.d * 0.5;
-      point_tail[1, 0] = rocket.l; point_tail[1, 1] = 0.5 * rocket.boattail.d;
-      point_tail[2, 0] = rocket.l; point_tail[2, 1] = -0.5 * rocket.boattail.d;
-      point_tail[3, 0] = rocket.l - rocket.boattail.l; point_tail[3, 1] = -rocket.d * 0.5;
-      point_tail[4, 0] = point_tail[0, 0]; point_tail[4, 1] = point_body[0, 1];
-
-      point_fin1[0, 0] = rocket.fin.X_fin; point_fin1[0, 1] = rocket.d * 0.5;
-      point_fin1[1, 0] = rocket.fin.Cr + rocket.fin.X_fin; point_fin1[1, 1] = rocket.fin.Span + rocket.d * 0.5;
-      point_fin1[2, 0] = rocket.fin.Cm + rocket.fin.Ct + rocket.fin.X_fin; point_fin1[2, 1] = rocket.fin.Span + rocket.d * 0.5;
-      point_fin1[3, 0] = rocket.fin.Cm + rocket.fin.X_fin; point_fin1[3, 1] = rocket.fin.Span + rocket.d * 0.5;
-      point_fin1[4, 0] = point_fin1[0, 0]; point_fin1[4, 1] = point_fin1[0, 1];
-
-      point_fin2[0, 0] = point_fin1[0, 0]; point_fin2[0, 1] = -point_fin1[0, 1];
-      point_fin2[1, 0] = point_fin1[1, 0]; point_fin2[1, 1] = -point_fin1[1, 1];
-      point_fin2[2, 0] = point_fin1[2, 0]; point_fin2[2, 1] = -point_fin1[2, 1];
-      point_fin2[3, 0] = point_fin1[3, 0]; point_fin2[3, 1] = -point_fin1[3, 1];
-      point_fin2[4, 0] = point_fin2[0, 0]; point_fin2[4, 1] = point_fin2[0, 1];
-
-      point_fin3[0, 0] = point_fin1[0, 0];
-      point_fin3[1, 0] = point_fin1[1, 0];
-      
-    }    
   }
 
   public static class utility

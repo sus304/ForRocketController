@@ -35,11 +35,11 @@
       this.text_diameter = new System.Windows.Forms.TextBox();
       this.text_length = new System.Windows.Forms.TextBox();
       this.label2 = new System.Windows.Forms.Label();
-      this.text__lcg = new System.Windows.Forms.TextBox();
+      this.text_lcg = new System.Windows.Forms.TextBox();
       this.label3 = new System.Windows.Forms.Label();
-      this.text__lcgs = new System.Windows.Forms.TextBox();
+      this.text_lcgs = new System.Windows.Forms.TextBox();
       this.label4 = new System.Windows.Forms.Label();
-      this.text__lcga = new System.Windows.Forms.TextBox();
+      this.text_lcga = new System.Windows.Forms.TextBox();
       this.label5 = new System.Windows.Forms.Label();
       this.text_Ct = new System.Windows.Forms.TextBox();
       this.label6 = new System.Windows.Forms.Label();
@@ -97,11 +97,11 @@
       this.text_DR = new System.Windows.Forms.TextBox();
       this.label32 = new System.Windows.Forms.Label();
       this.CalcButton = new System.Windows.Forms.Button();
-      this.text_lcga = new System.Windows.Forms.TextBox();
+      this.text_lcga_ = new System.Windows.Forms.TextBox();
       this.label33 = new System.Windows.Forms.Label();
-      this.text_lcg = new System.Windows.Forms.TextBox();
+      this.text_lcg_ = new System.Windows.Forms.TextBox();
       this.label34 = new System.Windows.Forms.Label();
-      this.text_lcgs = new System.Windows.Forms.TextBox();
+      this.text_lcgs_ = new System.Windows.Forms.TextBox();
       this.label35 = new System.Windows.Forms.Label();
       this.text_Vf = new System.Windows.Forms.TextBox();
       this.label36 = new System.Windows.Forms.Label();
@@ -172,17 +172,17 @@
       this.label2.TabIndex = 3;
       this.label2.Text = "全長 [mm]";
       // 
-      // text__lcg
+      // text_lcg
       // 
-      this.text__lcg.Location = new System.Drawing.Point(161, 108);
-      this.text__lcg.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-      this.text__lcg.Name = "text__lcg";
-      this.text__lcg.Size = new System.Drawing.Size(63, 25);
-      this.text__lcg.TabIndex = 4;
-      this.text__lcg.Text = "0";
-      this.text__lcg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-      this.text__lcg.Enter += new System.EventHandler(this.text_lcg_Enter);
-      this.text__lcg.Leave += new System.EventHandler(this.text_lcg_Leave);
+      this.text_lcg.Location = new System.Drawing.Point(161, 108);
+      this.text_lcg.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+      this.text_lcg.Name = "text_lcg";
+      this.text_lcg.Size = new System.Drawing.Size(63, 25);
+      this.text_lcg.TabIndex = 4;
+      this.text_lcg.Text = "0";
+      this.text_lcg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+      this.text_lcg.Enter += new System.EventHandler(this.text_lcg_Enter);
+      this.text_lcg.Leave += new System.EventHandler(this.text_lcg_Leave);
       // 
       // label3
       // 
@@ -193,17 +193,17 @@
       this.label3.TabIndex = 7;
       this.label3.Text = "機体全機重心 [mm]";
       // 
-      // text__lcgs
+      // text_lcgs
       // 
-      this.text__lcgs.Location = new System.Drawing.Point(161, 75);
-      this.text__lcgs.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-      this.text__lcgs.Name = "text__lcgs";
-      this.text__lcgs.Size = new System.Drawing.Size(63, 25);
-      this.text__lcgs.TabIndex = 3;
-      this.text__lcgs.Text = "0";
-      this.text__lcgs.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-      this.text__lcgs.Enter += new System.EventHandler(this.text_lcgs_Enter);
-      this.text__lcgs.Leave += new System.EventHandler(this.text_lcgs_Leave);
+      this.text_lcgs.Location = new System.Drawing.Point(161, 75);
+      this.text_lcgs.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+      this.text_lcgs.Name = "text_lcgs";
+      this.text_lcgs.Size = new System.Drawing.Size(63, 25);
+      this.text_lcgs.TabIndex = 3;
+      this.text_lcgs.Text = "0";
+      this.text_lcgs.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+      this.text_lcgs.Enter += new System.EventHandler(this.text_lcgs_Enter);
+      this.text_lcgs.Leave += new System.EventHandler(this.text_lcgs_Leave);
       // 
       // label4
       // 
@@ -214,17 +214,17 @@
       this.label4.TabIndex = 5;
       this.label4.Text = "機体乾燥重心 [mm]";
       // 
-      // text__lcga
+      // text_lcga
       // 
-      this.text__lcga.Location = new System.Drawing.Point(161, 141);
-      this.text__lcga.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-      this.text__lcga.Name = "text__lcga";
-      this.text__lcga.Size = new System.Drawing.Size(63, 25);
-      this.text__lcga.TabIndex = 5;
-      this.text__lcga.Text = "0";
-      this.text__lcga.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-      this.text__lcga.Enter += new System.EventHandler(this.text_lcga_Enter);
-      this.text__lcga.Leave += new System.EventHandler(this.text_lcga_Leave);
+      this.text_lcga.Location = new System.Drawing.Point(161, 141);
+      this.text_lcga.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+      this.text_lcga.Name = "text_lcga";
+      this.text_lcga.Size = new System.Drawing.Size(63, 25);
+      this.text_lcga.TabIndex = 5;
+      this.text_lcga.Text = "0";
+      this.text_lcga.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+      this.text_lcga.Enter += new System.EventHandler(this.text_lcga_Enter);
+      this.text_lcga.Leave += new System.EventHandler(this.text_lcga_Leave);
       // 
       // label5
       // 
@@ -848,17 +848,17 @@
       this.CalcButton.UseVisualStyleBackColor = true;
       this.CalcButton.Click += new System.EventHandler(this.CalcButton_Click);
       // 
-      // text_lcga
+      // text_lcga_
       // 
-      this.text_lcga.BackColor = System.Drawing.Color.WhiteSmoke;
-      this.text_lcga.ForeColor = System.Drawing.Color.Black;
-      this.text_lcga.Location = new System.Drawing.Point(149, 86);
-      this.text_lcga.Name = "text_lcga";
-      this.text_lcga.ReadOnly = true;
-      this.text_lcga.Size = new System.Drawing.Size(63, 25);
-      this.text_lcga.TabIndex = 139;
-      this.text_lcga.TabStop = false;
-      this.text_lcga.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+      this.text_lcga_.BackColor = System.Drawing.Color.WhiteSmoke;
+      this.text_lcga_.ForeColor = System.Drawing.Color.Black;
+      this.text_lcga_.Location = new System.Drawing.Point(149, 86);
+      this.text_lcga_.Name = "text_lcga_";
+      this.text_lcga_.ReadOnly = true;
+      this.text_lcga_.Size = new System.Drawing.Size(63, 25);
+      this.text_lcga_.TabIndex = 139;
+      this.text_lcga_.TabStop = false;
+      this.text_lcga_.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
       // 
       // label33
       // 
@@ -869,17 +869,17 @@
       this.label33.TabIndex = 138;
       this.label33.Text = "機体燃焼終了重心 [mm]";
       // 
-      // text_lcg
+      // text_lcg_
       // 
-      this.text_lcg.BackColor = System.Drawing.Color.WhiteSmoke;
-      this.text_lcg.ForeColor = System.Drawing.Color.Black;
-      this.text_lcg.Location = new System.Drawing.Point(149, 55);
-      this.text_lcg.Name = "text_lcg";
-      this.text_lcg.ReadOnly = true;
-      this.text_lcg.Size = new System.Drawing.Size(63, 25);
-      this.text_lcg.TabIndex = 137;
-      this.text_lcg.TabStop = false;
-      this.text_lcg.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+      this.text_lcg_.BackColor = System.Drawing.Color.WhiteSmoke;
+      this.text_lcg_.ForeColor = System.Drawing.Color.Black;
+      this.text_lcg_.Location = new System.Drawing.Point(149, 55);
+      this.text_lcg_.Name = "text_lcg_";
+      this.text_lcg_.ReadOnly = true;
+      this.text_lcg_.Size = new System.Drawing.Size(63, 25);
+      this.text_lcg_.TabIndex = 137;
+      this.text_lcg_.TabStop = false;
+      this.text_lcg_.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
       // 
       // label34
       // 
@@ -890,17 +890,17 @@
       this.label34.TabIndex = 136;
       this.label34.Text = "機体全備重心 [mm]";
       // 
-      // text_lcgs
+      // text_lcgs_
       // 
-      this.text_lcgs.BackColor = System.Drawing.Color.WhiteSmoke;
-      this.text_lcgs.ForeColor = System.Drawing.Color.Black;
-      this.text_lcgs.Location = new System.Drawing.Point(149, 24);
-      this.text_lcgs.Name = "text_lcgs";
-      this.text_lcgs.ReadOnly = true;
-      this.text_lcgs.Size = new System.Drawing.Size(63, 25);
-      this.text_lcgs.TabIndex = 135;
-      this.text_lcgs.TabStop = false;
-      this.text_lcgs.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+      this.text_lcgs_.BackColor = System.Drawing.Color.WhiteSmoke;
+      this.text_lcgs_.ForeColor = System.Drawing.Color.Black;
+      this.text_lcgs_.Location = new System.Drawing.Point(149, 24);
+      this.text_lcgs_.Name = "text_lcgs_";
+      this.text_lcgs_.ReadOnly = true;
+      this.text_lcgs_.Size = new System.Drawing.Size(63, 25);
+      this.text_lcgs_.TabIndex = 135;
+      this.text_lcgs_.TabStop = false;
+      this.text_lcgs_.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
       // 
       // label35
       // 
@@ -1067,12 +1067,12 @@
       // groupBox4
       // 
       this.groupBox4.Controls.Add(this.checkBox_includeFin);
-      this.groupBox4.Controls.Add(this.text_lcgs);
+      this.groupBox4.Controls.Add(this.text_lcgs_);
       this.groupBox4.Controls.Add(this.label35);
       this.groupBox4.Controls.Add(this.label34);
-      this.groupBox4.Controls.Add(this.text_lcg);
+      this.groupBox4.Controls.Add(this.text_lcg_);
       this.groupBox4.Controls.Add(this.label33);
-      this.groupBox4.Controls.Add(this.text_lcga);
+      this.groupBox4.Controls.Add(this.text_lcga_);
       this.groupBox4.Location = new System.Drawing.Point(660, 40);
       this.groupBox4.Name = "groupBox4";
       this.groupBox4.Size = new System.Drawing.Size(222, 117);
@@ -1095,7 +1095,6 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 18F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.BackColor = System.Drawing.SystemColors.Control;
       this.ClientSize = new System.Drawing.Size(1069, 513);
       this.Controls.Add(this.groupBox4);
       this.Controls.Add(this.label40);
@@ -1145,7 +1144,7 @@
       this.Controls.Add(this.label14);
       this.Controls.Add(this.label9);
       this.Controls.Add(this.combo_nose);
-      this.Controls.Add(this.text__lcga);
+      this.Controls.Add(this.text_lcga);
       this.Controls.Add(this.label5);
       this.Controls.Add(this.text_Ct);
       this.Controls.Add(this.label6);
@@ -1153,9 +1152,9 @@
       this.Controls.Add(this.label7);
       this.Controls.Add(this.text_Cr);
       this.Controls.Add(this.label8);
-      this.Controls.Add(this.text__lcg);
+      this.Controls.Add(this.text_lcg);
       this.Controls.Add(this.label3);
-      this.Controls.Add(this.text__lcgs);
+      this.Controls.Add(this.text_lcgs);
       this.Controls.Add(this.label4);
       this.Controls.Add(this.text_length);
       this.Controls.Add(this.label2);
@@ -1171,7 +1170,7 @@
       this.RightToLeft = System.Windows.Forms.RightToLeft.No;
       this.ShowIcon = false;
       this.Text = "Aero Design";
-      this.Load += new System.EventHandler(this.AeroDesignForm_Load);
+      this.Load += new System.EventHandler(this.MainForm_Load);
       ((System.ComponentModel.ISupportInitialize)(this.rocketplot)).EndInit();
       this.statusStrip.ResumeLayout(false);
       this.statusStrip.PerformLayout();
@@ -1194,11 +1193,11 @@
     private System.Windows.Forms.TextBox text_diameter;
     private System.Windows.Forms.TextBox text_length;
     private System.Windows.Forms.Label label2;
-    private System.Windows.Forms.TextBox text__lcg;
+    private System.Windows.Forms.TextBox text_lcg;
     private System.Windows.Forms.Label label3;
-    private System.Windows.Forms.TextBox text__lcgs;
+    private System.Windows.Forms.TextBox text_lcgs;
     private System.Windows.Forms.Label label4;
-    private System.Windows.Forms.TextBox text__lcga;
+    private System.Windows.Forms.TextBox text_lcga;
     private System.Windows.Forms.Label label5;
     private System.Windows.Forms.TextBox text_Ct;
     private System.Windows.Forms.Label label6;
@@ -1257,11 +1256,11 @@
     private System.Windows.Forms.TextBox text_DR;
     private System.Windows.Forms.Label label32;
     private System.Windows.Forms.Button CalcButton;
-    private System.Windows.Forms.TextBox text_lcga;
+    private System.Windows.Forms.TextBox text_lcga_;
     private System.Windows.Forms.Label label33;
-    private System.Windows.Forms.TextBox text_lcg;
+    private System.Windows.Forms.TextBox text_lcg_;
     private System.Windows.Forms.Label label34;
-    private System.Windows.Forms.TextBox text_lcgs;
+    private System.Windows.Forms.TextBox text_lcgs_;
     private System.Windows.Forms.Label label35;
     private System.Windows.Forms.TextBox text_Vf;
     private System.Windows.Forms.Label label36;

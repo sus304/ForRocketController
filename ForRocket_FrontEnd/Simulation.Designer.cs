@@ -1,6 +1,6 @@
 ﻿namespace ForRocket_FrontEnd
 {
-  partial class ControllerForm
+  partial class Simulation
   {
     /// <summary>
     /// Required designer variable.
@@ -28,7 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
-      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ControllerForm));
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Simulation));
       this.button_AeroDesign = new System.Windows.Forms.Button();
       this.label1 = new System.Windows.Forms.Label();
       this.text_Pa = new System.Windows.Forms.TextBox();
@@ -65,6 +65,7 @@
       this.openFileDialog_structure = new System.Windows.Forms.OpenFileDialog();
       this.openFileDialog_Engine = new System.Windows.Forms.OpenFileDialog();
       this.button_LandingRange = new System.Windows.Forms.Button();
+      this.textBox_Aero = new System.Windows.Forms.TextBox();
       this.groupBox3 = new System.Windows.Forms.GroupBox();
       this.check_log = new System.Windows.Forms.RadioButton();
       this.check_table = new System.Windows.Forms.RadioButton();
@@ -89,11 +90,11 @@
       // 
       // button_AeroDesign
       // 
-      this.button_AeroDesign.Font = new System.Drawing.Font("メイリオ", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-      this.button_AeroDesign.Location = new System.Drawing.Point(12, 182);
+      this.button_AeroDesign.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+      this.button_AeroDesign.Location = new System.Drawing.Point(12, 187);
       this.button_AeroDesign.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
       this.button_AeroDesign.Name = "button_AeroDesign";
-      this.button_AeroDesign.Size = new System.Drawing.Size(287, 35);
+      this.button_AeroDesign.Size = new System.Drawing.Size(87, 34);
       this.button_AeroDesign.TabIndex = 0;
       this.button_AeroDesign.TabStop = false;
       this.button_AeroDesign.Text = "Aero Design";
@@ -299,10 +300,10 @@
       // button_Simulation
       // 
       this.button_Simulation.Font = new System.Drawing.Font("メイリオ", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-      this.button_Simulation.Location = new System.Drawing.Point(12, 276);
+      this.button_Simulation.Location = new System.Drawing.Point(12, 246);
       this.button_Simulation.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
       this.button_Simulation.Name = "button_Simulation";
-      this.button_Simulation.Size = new System.Drawing.Size(287, 77);
+      this.button_Simulation.Size = new System.Drawing.Size(287, 108);
       this.button_Simulation.TabIndex = 22;
       this.button_Simulation.TabStop = false;
       this.button_Simulation.Text = "Start Simulation\r\n(Call ForRocket)";
@@ -460,15 +461,25 @@
       // button_LandingRange
       // 
       this.button_LandingRange.Font = new System.Drawing.Font("メイリオ", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-      this.button_LandingRange.Location = new System.Drawing.Point(12, 361);
+      this.button_LandingRange.Location = new System.Drawing.Point(12, 362);
       this.button_LandingRange.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
       this.button_LandingRange.Name = "button_LandingRange";
-      this.button_LandingRange.Size = new System.Drawing.Size(287, 78);
+      this.button_LandingRange.Size = new System.Drawing.Size(287, 108);
       this.button_LandingRange.TabIndex = 28;
       this.button_LandingRange.TabStop = false;
       this.button_LandingRange.Text = "Landing Range Plot";
       this.button_LandingRange.UseVisualStyleBackColor = true;
       this.button_LandingRange.Click += new System.EventHandler(this.Button_LandingRange_Click);
+      // 
+      // textBox_Aero
+      // 
+      this.textBox_Aero.Location = new System.Drawing.Point(105, 192);
+      this.textBox_Aero.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+      this.textBox_Aero.Name = "textBox_Aero";
+      this.textBox_Aero.ReadOnly = true;
+      this.textBox_Aero.Size = new System.Drawing.Size(194, 25);
+      this.textBox_Aero.TabIndex = 30;
+      this.textBox_Aero.TabStop = false;
       // 
       // groupBox3
       // 
@@ -635,21 +646,22 @@
       // LogoPic
       // 
       this.LogoPic.Image = global::ForRocket_FrontEnd.Properties.Resources.ForRocket_Logo;
-      this.LogoPic.Location = new System.Drawing.Point(706, 340);
+      this.LogoPic.Location = new System.Drawing.Point(725, 400);
       this.LogoPic.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
       this.LogoPic.Name = "LogoPic";
-      this.LogoPic.Size = new System.Drawing.Size(292, 93);
+      this.LogoPic.Size = new System.Drawing.Size(271, 76);
       this.LogoPic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
       this.LogoPic.TabIndex = 29;
       this.LogoPic.TabStop = false;
       this.LogoPic.Click += new System.EventHandler(this.LogoPic_Click);
       // 
-      // ControllerForm
+      // Simulation
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 18F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(1001, 452);
+      this.ClientSize = new System.Drawing.Size(1001, 482);
       this.Controls.Add(this.groupBox3);
+      this.Controls.Add(this.textBox_Aero);
       this.Controls.Add(this.label11);
       this.Controls.Add(this.LogoPic);
       this.Controls.Add(this.label12);
@@ -697,7 +709,7 @@
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
       this.MaximizeBox = false;
-      this.Name = "ControllerForm";
+      this.Name = "Simulation";
       this.RightToLeft = System.Windows.Forms.RightToLeft.No;
       this.Text = "ForRocket Controller";
       this.Load += new System.EventHandler(this.Simulation_Load);
@@ -749,6 +761,7 @@
     private System.Windows.Forms.OpenFileDialog openFileDialog_Engine;
     private System.Windows.Forms.Button button_LandingRange;
     private System.Windows.Forms.PictureBox LogoPic;
+    private System.Windows.Forms.TextBox textBox_Aero;
     private System.Windows.Forms.RadioButton check_noshiro_land;
     private System.Windows.Forms.RadioButton check_noshiro_sea;
     private System.Windows.Forms.RadioButton check_taiki_land;
