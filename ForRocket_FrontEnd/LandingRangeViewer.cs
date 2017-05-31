@@ -113,8 +113,8 @@ namespace LandingRangeViewer
       double ScaleFactor, ScaleFactor_;
       int[] launchpoint = new int[2];
 
-      launchpoint[0] = 256;
-      launchpoint[1] = 366;
+      launchpoint[0] = 314;
+      launchpoint[1] = 348;
       ScaleFactor = 100.0 / 58.0; // m/px
 
       Graph_Range.BackImage = "NoshiroLand";
