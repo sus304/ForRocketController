@@ -531,7 +531,7 @@ namespace AeroDesign
 		private void button_output_Click(object sender, EventArgs e)
 		{
 			rocket.me_withfin = rocket.me + BM.fin.m_fin;
-			rocket.lcge_withfin = (rocket.me * rocket.lcge + BM.fin.m_fin * BM.fin.lcg_fin) / (rocket.me + BM.fin.m_fin);
+			rocket.lcge_withfin = (rocket.me * rocket.lcge + BM.fin.m_fin * BM.fin.lcg_fin / 1000.0) / (rocket.me + BM.fin.m_fin);
 			rocket.lcp = double.Parse(text_lcp.Text) / 1000.0;
 			rocket.CNa = double.Parse(text_CNa.Text);
 			rocket.Cmq = double.Parse(text_Cmq.Text);
